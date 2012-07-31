@@ -1,0 +1,8 @@
+This is a control panel app for the rest of bscms.
+It uses some ideas borrowed from django.contrib.admin to dynamically
+create and admin/control panel interface.
+
+In bscontrolpanel views are registered with the control panel rather than models
+like in contrib.admin.  This allows streamlined views to be built for different
+bits of functionality rather than the lower level, more direct interface of
+contrib.admin
