@@ -1,0 +1,17 @@
+{% extends 'bscontrolpanel/base.html' %}
+{# no navbar for login #}
+{% block navbar %}{% endblock navbar %}
+{% block page_header %}{% endblock page_header %}
+{% block primary %}
+<div class="row">
+  <div class="well span4 offset4">
+    <form method="post" action="">
+      {% csrf_token %}
+      {# add some sort of django-bootstrap deal to style this better #}
+      {{ form.as_ul }}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <input type="submit" class="btn btn-primary" value="login"></input>
+    </form>
+  </div>
+</div>
+{% endblock primary %}
