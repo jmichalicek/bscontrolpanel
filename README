@@ -6,3 +6,63 @@ In bscontrolpanel views are registered with the control panel rather than models
 like in contrib.admin.  This allows streamlined views to be built for different
 bits of functionality rather than the lower level, more direct interface of
 contrib.admin
+
+Usage:
+To use bscontrolpanel, add bscontrolpanel to your INSTALLED_APPS in settings.py
+and set up a url route for it in your site's urls.py.
+
+In urls.py:
+import bscontrolpanel
+bscontrolpanel.autodiscover()
+
+urlpatterns = patterns('',
+                       #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+                       #url(r'^admin/', include(admin.site.urls)),
+                       url(r'^controlpanel/', include(bscontrolpanel.site.urls)),
+		       # your other views
+		       )
+
+
+
+After that create a controlpanel.py for any of the apps that you want in the
+control panel.  Your controlpanel.py may contain views, or you can keep them
+in your usual views.py, and should register any of the control panel views.
+
+Here's a simple controlpanel.py
+
+import bscontrolpanel
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+def blog_post(request):
+
+    return render_to_response(
+        'bsblog/controlpanel/post.html',
+        {},
+        context_instance=RequestContext(request)
+        )
+
+bscontrolpanel.site.register('Blog', blog_post, printable_name='New Post')
+
+bscontrolpanel.site.register takes four arguments.  The first two are not optional
+They are app_name and the view.
+app_name: The app_name should be the name of the app or something appropriate which
+is related.  It is used to group control panel views and will be a menu header in the
+control panel using the default templates.  It is also used to construct the url path
+to the control panel view.
+
+view: The view can be a callable as in the example or a string to be lazily resolved
+such as 'bsblog.views.post_controlpanel'.  This is also used as a default for the
+menu option for this view and to construct the url for the view.
+
+The next two are optional and are printable_name and view_path.
+
+view_path:  This can be used to set the last part of the url used to display the
+control panel view.  It will be sluggified to be safe and if not provided defaults
+to the view provided.
+
+printable_name: If provided this will be used for the menu option which links to
+this view.  If not provided then this defaults to match the view_path.
+
+
+With the examples above the finaly URL would be http://yourserver/controlpanel/Blog/blog_post/
