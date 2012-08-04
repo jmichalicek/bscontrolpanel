@@ -1,4 +1,5 @@
 from controlpanel import ControlPanel, site
+from controlpanel import PathAlreadyRegistered
 
 def autodiscover():
     """
@@ -15,5 +16,7 @@ def autodiscover():
         try:
             original_registry = copy.copy(site._registry)
             import_module('%s.controlpanel' % app)
+        except PathAlreadyRegistered:
+            raise
         except:
             site._registry = original_registry

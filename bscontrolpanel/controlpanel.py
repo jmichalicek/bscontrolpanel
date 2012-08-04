@@ -31,10 +31,11 @@ class ControlPanel(object):
         if app_name not in self._registry:
             self._registry[app_name] = []
 
+
         # Kind of ugly, but these shouldn't be very big
-        for view in self._registry[app_name]:
-            if view[1] == view_path:
-                raise PathAlreadyRegistered('The path %s is already registered for category %s' %(view_path, app_name))
+        for v in self._registry[app_name]:
+            if v[1] == view_path:
+                raise PathAlreadyRegistered('The path %s is already registered for app_name %s' %(view_path, app_name))
 
         self._registry[app_name].append((view, view_path, 'bscontrolpanel:%s' %view_path, printable_name))
 
